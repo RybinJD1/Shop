@@ -4,6 +4,7 @@ import com.model.CartInfo;
 import com.model.OrderDetailInfo;
 import com.model.OrderInfo;
 import com.model.PaginationResult;
+import com.services.exceptions.ServiceException;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public interface OrderService {
      *
      * @param cartInfo
      */
-    void saveOrder(CartInfo cartInfo);
+    void saveOrder(CartInfo cartInfo) throws ServiceException;
 
     /**
      * @param page
@@ -25,7 +26,7 @@ public interface OrderService {
      * @param maxNavigationPage
      * @return Pagination result
      */
-    PaginationResult<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage);
+    PaginationResult<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage) throws ServiceException;
 
     /**
      * This method of finding an order by id
@@ -33,11 +34,11 @@ public interface OrderService {
      * @param orderId
      * @return OrderInfo
      */
-    OrderInfo getOrderInfo(String orderId);
+    OrderInfo getOrderInfo(String orderId) throws ServiceException;
 
     /**
      * @param orderId
      * @return List OrderDetailInfo
      */
-    List<OrderDetailInfo> listOrderDetailInfos(String orderId);
+    List<OrderDetailInfo> listOrderDetailInfos(String orderId) throws ServiceException;
 }

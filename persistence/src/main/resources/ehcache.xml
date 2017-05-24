@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache updateCheck="false">
+    <diskStore path="java.io.tmpdir"/>
+    <defaultCache
+            eternal="false"
+            timeToIdleSeconds="300"
+            timeToLiveSeconds="600"
+            overflowToDisk="false"
+            diskPersistent="false"
+            DiskExpiryThreadIntervalSeconds="300"
+            maxElementsInMemory="10000"
+            memoryStoreEvictionPolicy="LRU"/>
+
+    <cache name="com.entity.Product"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="false"/>
+    <cache name="com.entity.Order"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="false"/>
+    <cache name="com.entity.Account"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="false"/>
+    <cache name="com.entity.OrderDetail"
+           maxElementsInMemory="1000"
+           eternal="true"
+           overflowToDisk="false"/>
+</ehcache>

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  * Class DAO for accounts.
  */
 @Repository
-public class AccountDaoImpl implements AccountDao{
+public class AccountDaoImpl implements AccountDao {
 
     private static final Logger log = Logger.getLogger(AccountDaoImpl.class);
 
@@ -22,7 +22,7 @@ public class AccountDaoImpl implements AccountDao{
     private SessionFactory sessionFactory;
 
     @Override
-    public Account findAccount(String userName ) {
+    public Account findAccount(String userName) {
         log.info("findAccount to dao :" + userName);
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Account.class);

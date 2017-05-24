@@ -3,6 +3,7 @@ package com.services;
 import com.entity.Product;
 import com.model.PaginationResult;
 import com.model.ProductInfo;
+import com.services.exceptions.ServiceException;
 
 /**
  * Interface ProductService
@@ -15,7 +16,7 @@ public interface ProductService {
      * @param code
      * @return
      */
-    Product findProduct(String code);
+    Product findProduct(String code) throws ServiceException;
 
     /**
      * This method find product info by id
@@ -23,7 +24,7 @@ public interface ProductService {
      * @param code
      * @return ProductInfo
      */
-    ProductInfo findProductInfo(String code);
+    ProductInfo findProductInfo(String code) throws ServiceException;
 
     /**
      * @param page
@@ -31,7 +32,7 @@ public interface ProductService {
      * @param maxNavigationPage
      * @return Pagination Result
      */
-    PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage);
+    PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage) throws ServiceException;
 
     /**
      * @param page
@@ -40,12 +41,12 @@ public interface ProductService {
      * @param likeName
      * @return Pagination Result
      */
-    PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage, String likeName);
+    PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage, String likeName) throws ServiceException;
 
     /**
      * This method save product info
      *
      * @param productInfo
      */
-    void save(ProductInfo productInfo);
+    void save(ProductInfo productInfo) throws ServiceException;
 }

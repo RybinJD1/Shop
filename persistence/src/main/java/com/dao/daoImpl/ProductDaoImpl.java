@@ -1,22 +1,24 @@
 package com.dao.daoImpl;
 
 import com.dao.ProductDao;
+import com.dao.exceptions.DaoException;
 import com.entity.Product;
 import com.model.PaginationResult;
 import com.model.ProductInfo;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
+
+/**
+ * Class DAO for Product.
+ */
 @Repository
-public class ProductDaoImpl implements ProductDao{
+public class ProductDaoImpl implements ProductDao {
 
     private static final Logger log = Logger.getLogger(ProductDaoImpl.class);
 
@@ -26,14 +28,19 @@ public class ProductDaoImpl implements ProductDao{
     @Override
     public Product findProduct(String code) {
         log.info("findProduct :" + code);
-        Session session = sessionFactory.getCurrentSession();
+        Session session;
+        try {
+            session = sessionFactory.getCurrentSession();
+        } catch (HibernateException e) {
+            session = sessionFactory.openSession();
+        }
         Criteria crit = session.createCriteria(Product.class);
         crit.add(Restrictions.eq("code", code));
         return (Product) crit.uniqueResult();
     }
 
     @Override
-    public ProductInfo findProductInfo(String code) {
+    public ProductInfo findProductInfo(String code) throws DaoException {
         log.info("findProductInfo :" + code);
         Product product = this.findProduct(code);
         if (product == null) {
@@ -43,7 +50,7 @@ public class ProductDaoImpl implements ProductDao{
     }
 
     @Override
-    public void save(ProductInfo productInfo) {
+    public void save(ProductInfo productInfo) throws DaoException {
         log.info("save :");
         String code = productInfo.getCode();
         Product product = null;
@@ -72,7 +79,7 @@ public class ProductDaoImpl implements ProductDao{
     }
 
     @Override
-    public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage, String likeName) {
+    public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage, String likeName) throws DaoException {
         log.info("queryProducts :");
         String sql = "Select new " + ProductInfo.class.getName()
                 + "(p.code, p.name, p.price) " + " from "
@@ -90,7 +97,7 @@ public class ProductDaoImpl implements ProductDao{
     }
 
     @Override
-    public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage) {
+    public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage) throws DaoException {
         log.info("queryProducts");
         return queryProducts(page, maxResult, maxNavigationPage, null);
     }

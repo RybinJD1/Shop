@@ -13,6 +13,7 @@ import java.util.Date;
 @Table(name = "Products")
 @ToString
 @EqualsAndHashCode
+//@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 1L;

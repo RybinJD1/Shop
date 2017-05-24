@@ -1,5 +1,6 @@
 package com.dao;
 
+import com.dao.exceptions.DaoException;
 import com.model.CartInfo;
 import com.model.OrderDetailInfo;
 import com.model.OrderInfo;
@@ -17,7 +18,7 @@ public interface OrderDao {
      *
      * @param cartInfo
      */
-    void saveOrder(CartInfo cartInfo);
+    void saveOrder(CartInfo cartInfo) throws DaoException;
 
     /**
      * @param page
@@ -25,7 +26,7 @@ public interface OrderDao {
      * @param maxNavigationPage
      * @return Pagination result
      */
-    PaginationResult<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage);
+    PaginationResult<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage) throws DaoException;
 
     /**
      * This method of finding an order by id
@@ -33,11 +34,11 @@ public interface OrderDao {
      * @param orderId
      * @return Order info
      */
-    OrderInfo getOrderInfo(String orderId);
+    OrderInfo getOrderInfo(String orderId) throws DaoException;
 
     /**
      * @param orderId
      * @return List OrderDetailInfo
      */
-    List<OrderDetailInfo> listOrderDetailInfos(String orderId);
+    List<OrderDetailInfo> listOrderDetailInfos(String orderId) throws DaoException;
 }

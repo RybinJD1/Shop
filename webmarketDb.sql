@@ -56,3 +56,51 @@ values ('admin', 1, '123', 'ADMIN');
 
 insert into Accounts (USER_NAME, ACTIVE, PASSWORD, USER_ROLE)
 values ('user', 1, '123', 'USER');
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S001', 'Ford', 100, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S002', 'Honda', 50, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S003', 'Hyunda', 120, now() );
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S004', 'Kia', 120, now() );
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S005', 'Mazda', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S006', 'Mercedes', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S007', 'Peugeot', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S008', 'Opel', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S009', 'Nissan', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S010', 'Mitsubishi', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S011', 'Fiat', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S012', 'Dodge', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S013', 'Citroen', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S014', 'Chrysler', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S015', 'BMW', 110, now());
+
+insert into products (CODE, NAME, PRICE, CREATE_DATE)
+values ('S016', 'Audi', 110, now());

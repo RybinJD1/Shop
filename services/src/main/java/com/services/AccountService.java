@@ -1,6 +1,7 @@
 package com.services;
 
 import com.entity.Account;
+import com.services.exceptions.ServiceException;
 
 /**
  * Interface AccountService
@@ -13,6 +14,6 @@ public interface AccountService {
      * @param userName
      * @return
      */
-    Account findAccount(String userName);
+    Account findAccount(String userName) throws ServiceException;
 
 }

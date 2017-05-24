@@ -2,6 +2,7 @@ package com.dao.daoImpl;
 
 import com.dao.OrderDao;
 import com.dao.ProductDao;
+import com.dao.exceptions.DaoException;
 import com.entity.Order;
 import com.entity.OrderDetail;
 import com.entity.Product;
@@ -46,7 +47,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void saveOrder(CartInfo cartInfo) {
+    public void saveOrder(CartInfo cartInfo) throws DaoException {
         log.info("saveOrder :");
         Session session = sessionFactory.getCurrentSession();
         int orderNum = this.getMaxOrderNum() + 1;
@@ -78,7 +79,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public PaginationResult<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage) {
+    public PaginationResult<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage) throws DaoException {
         log.info("listOrderInfo :");
         String sql = "Select new " + OrderInfo.class.getName()
                 + "(ord.id, ord.orderDate, ord.orderNum, ord.amount, "
@@ -90,7 +91,7 @@ public class OrderDaoImpl implements OrderDao {
         return new PaginationResult<OrderInfo>(query, page, maxResult, maxNavigationPage);
     }
 
-    public Order findOrder(String orderId) {
+    public Order findOrder(String orderId) throws DaoException {
         log.info("findOrder :" + orderId);
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Order.class);
@@ -99,7 +100,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public OrderInfo getOrderInfo(String orderId) {
+    public OrderInfo getOrderInfo(String orderId) throws DaoException {
         log.info("getOrderInfo :" + orderId);
         Order order = this.findOrder(orderId);
         if (order == null) {
@@ -111,7 +112,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<OrderDetailInfo> listOrderDetailInfos(String orderId) {
+    public List<OrderDetailInfo> listOrderDetailInfos(String orderId) throws DaoException {
         log.info("listOrderDetailInfos :" + orderId);
         String sql = "Select new " + OrderDetailInfo.class.getName()
                 + "(d.id, d.product.code, d.product.name , d.quanity,d.price,d.amount) "

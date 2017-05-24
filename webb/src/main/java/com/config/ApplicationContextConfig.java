@@ -30,6 +30,7 @@ import java.util.Properties;
 @ComponentScan(basePackages = "com")
 @EnableTransactionManagement
 @PropertySource("classpath:ds-hibernate-cfg.properties")
+//@EnableCaching
 public class ApplicationContextConfig {
 
     private static final Logger log = Logger.getLogger(ApplicationContextConfig.class);
@@ -101,6 +102,13 @@ public class ApplicationContextConfig {
         properties.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
         properties.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         properties.put("current_session_context_class", env.getProperty("current_session_context_class"));
+        properties.put("hibernate.connection.isolation", env.getProperty("hibernate.connection.isolation"));
+
+//        properties.put("hibernate.cache.use_query_cache", env.getProperty("hibernate.cache.use_query_cache"));
+//        properties.put("hibernate.cache.use_second_level_cache", env.getProperty("hibernate.cache.use_second_level_cache"));
+//        properties.put("hibernate.cache.region.factory_class", env.getProperty("hibernate.cache.region.factory_class"));
+//        properties.put("net.sf.ehcache.configurationResourceName", env.getProperty("net.sf.ehcache.configurationResourceName"));
+
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setPackagesToScan(new String[]{"com.entity"});
         factoryBean.setDataSource(dataSource);
@@ -117,6 +125,7 @@ public class ApplicationContextConfig {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
         return transactionManager;
     }
+
 
     @Bean(name = "accountService")
     public AccountService getApplicantService() {

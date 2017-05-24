@@ -6,7 +6,9 @@ import com.model.PaginationResult;
 import com.model.ProductInfo;
 import com.services.OrderService;
 import com.services.ProductService;
+import com.services.exceptions.ServiceException;
 import com.validators.ProductInfoValidator;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -29,6 +32,9 @@ import java.util.List;
 @Transactional
 @EnableWebMvc
 public class AdminController {
+
+    private static final Logger log = Logger.getLogger(AdminController.class);
+
 
     @Autowired
     private OrderService orderService;
@@ -71,7 +77,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = {"/orderList"}, method = RequestMethod.GET)
-    public String orderList(Model model,
+    public String orderList(Model model, ModelMap modelMap,
                             @RequestParam(value = "page", defaultValue = "1") String pageStr) {
         int page = 1;
         try {
@@ -81,16 +87,29 @@ public class AdminController {
         final int MAX_RESULT = 5;
         final int MAX_NAVIGATION_PAGE = 10;
         PaginationResult<OrderInfo> paginationResult
-                = orderService.listOrderInfo(page, MAX_RESULT, MAX_NAVIGATION_PAGE);
+                = null;
+        try {
+            paginationResult = orderService.listOrderInfo(page, MAX_RESULT, MAX_NAVIGATION_PAGE);
+        } catch (ServiceException e) {
+            log.info("listOrderInfo :" + e);
+            modelMap.addAttribute("msg", "error.method.listOrderInfo");
+            return "/403";
+        }
         model.addAttribute("paginationResult", paginationResult);
         return "orderList";
     }
 
     @RequestMapping(value = {"/product"}, method = RequestMethod.GET)
-    public String product(Model model, @RequestParam(value = "code", defaultValue = "") String code) {
+    public String product(Model model, ModelMap modelMap, @RequestParam(value = "code", defaultValue = "") String code) {
         ProductInfo productInfo = null;
         if (code != null && code.length() > 0) {
-            productInfo = productService.findProductInfo(code);
+            try {
+                productInfo = productService.findProductInfo(code);
+            } catch (ServiceException e) {
+                log.info("findProductInfo :" + e);
+                modelMap.addAttribute("msg", "error.method.findProductInfo");
+                return "/403";
+            }
         }
         if (productInfo == null) {
             productInfo = new ProductInfo();
@@ -121,15 +140,28 @@ public class AdminController {
     }
 
     @RequestMapping(value = {"/order"}, method = RequestMethod.GET)
-    public String orderView(Model model, @RequestParam("orderId") String orderId) {
+    public String orderView(Model model, ModelMap modelMap, @RequestParam("orderId") String orderId) {
         OrderInfo orderInfo = null;
         if (orderId != null) {
-            orderInfo = this.orderService.getOrderInfo(orderId);
+            try {
+                orderInfo = this.orderService.getOrderInfo(orderId);
+            } catch (ServiceException e) {
+                log.info("getOrderInfo :" + e);
+                modelMap.addAttribute("msg", "error.method.getOrderInfo");
+                return "/403";
+            }
         }
         if (orderInfo == null) {
             return "redirect:/orderList";
         }
-        List<OrderDetailInfo> details = this.orderService.listOrderDetailInfos(orderId);
+        List<OrderDetailInfo> details = null;
+        try {
+            details = this.orderService.listOrderDetailInfos(orderId);
+        } catch (ServiceException e) {
+            log.info("listOrderDetailInfos :" + e);
+            modelMap.addAttribute("msg", "error.method.listOrderDetailInfos");
+            return "/403";
+        }
         orderInfo.setDetails(details);
         model.addAttribute("orderInfo", orderInfo);
         return "order";

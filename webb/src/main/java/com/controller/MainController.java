@@ -7,13 +7,16 @@ import com.model.PaginationResult;
 import com.model.ProductInfo;
 import com.services.OrderService;
 import com.services.ProductService;
+import com.services.exceptions.ServiceException;
 import com.util.Utils;
 import com.validators.CustomerInfoValidator;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
@@ -29,6 +32,9 @@ import java.io.IOException;
 @Transactional
 @EnableWebMvc
 public class MainController {
+
+    private static final Logger log = Logger.getLogger(MainController.class);
+
 
     @Autowired
     private OrderService orderService;
@@ -64,23 +70,36 @@ public class MainController {
     }
 
     @RequestMapping({"/productList"})
-    public String listProductHandler(Model model,
+    public String listProductHandler(Model model, ModelMap modelMap,
                                      @RequestParam(value = "name", defaultValue = "") String likeName,
                                      @RequestParam(value = "page", defaultValue = "1") int page) {
         final int maxResult = 5;
         final int maxNavigationPage = 10;
-        PaginationResult<ProductInfo> result = productService.queryProducts(page,
-                maxResult, maxNavigationPage, likeName);
+        PaginationResult<ProductInfo> result = null;
+        try {
+            result = productService.queryProducts(page,
+                    maxResult, maxNavigationPage, likeName);
+        } catch (ServiceException e) {
+            log.info("queryProducts :" + e);
+            modelMap.addAttribute("msg", "error.method.queryProducts");
+            return "/403";
+        }
         model.addAttribute("paginationProducts", result);
         return "productList";
     }
 
     @RequestMapping({"/buyProduct"})
-    public String listProductHandler(HttpServletRequest request, Model model,
+    public String listProductHandler(HttpServletRequest request, Model model, ModelMap modelMap,
                                      @RequestParam(value = "code", defaultValue = "") String code) {
         Product product = null;
         if (code != null && code.length() > 0) {
-            product = productService.findProduct(code);
+            try {
+                product = productService.findProduct(code);
+            } catch (ServiceException e) {
+                log.info("findProduct :" + e);
+                modelMap.addAttribute("msg", "error.method.findProduct");
+                return "/403";
+            }
         }
         if (product != null) {
             CartInfo cartInfo = Utils.getCartInSession(request);
@@ -91,11 +110,17 @@ public class MainController {
     }
 
     @RequestMapping({"/shoppingCartRemoveProduct"})
-    public String removeProductHandler(HttpServletRequest request, Model model,
+    public String removeProductHandler(HttpServletRequest request, Model model, ModelMap modelMap,
                                        @RequestParam(value = "code", defaultValue = "") String code) {
         Product product = null;
         if (code != null && code.length() > 0) {
-            product = productService.findProduct(code);
+            try {
+                product = productService.findProduct(code);
+            } catch (ServiceException e) {
+                log.info("findProduct :" + e);
+                modelMap.addAttribute("msg", " error.method.findProduct");
+                return "/403";
+            }
         }
         if (product != null) {
             CartInfo cartInfo = Utils.getCartInSession(request);
@@ -188,11 +213,17 @@ public class MainController {
     }
 
     @RequestMapping(value = {"/productImage"}, method = RequestMethod.GET)
-    public void productImage(HttpServletRequest request, HttpServletResponse response, Model model,
+    public void productImage(HttpServletRequest request, ModelMap modelMap, HttpServletResponse response, Model model,
                              @RequestParam("code") String code) throws IOException {
         Product product = null;
         if (code != null) {
-            product = this.productService.findProduct(code);
+            try {
+                product = this.productService.findProduct(code);
+            } catch (ServiceException e) {
+                log.info("findProduct :" + e);
+                request.setAttribute("msg", "error.method.findProduct");
+                response.sendRedirect("/403");
+            }
         }
         if (product != null && product.getImage() != null) {
             response.setContentType("image/jpeg, image/jpg, image/png, image/gif");
