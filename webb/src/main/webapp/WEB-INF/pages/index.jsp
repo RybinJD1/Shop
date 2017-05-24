@@ -8,20 +8,20 @@
 
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles.css">
 </head>
+
 <body>
+<%--<jsp:include page="_header.jsp" />--%>
+<%--<jsp:include page="_menu.jsp" />--%>
 
-<jsp:include page="header.jsp" />
-<jsp:include page="menu.jsp" />
-
-<div class="page-title"><spring:message code='page.home'/></div>
+<div class="page-title"><spring:message code="page.home"/></div>
 
 <div class="container">
     <div class="jumbotron text-center">
-        <h1><spring:message code='page.welcome'/></h1>
+        <h1><spring:message code="page.welcome"/></h1>
     </div>
 </div>
 
-<jsp:include page="footer.jsp" />
+<jsp:include page="_footer.jsp" />
 
 </body>
 </html>

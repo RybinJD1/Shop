@@ -15,8 +15,8 @@
 </head>
 <body>
 
-<jsp:include page="header.jsp" />
-<jsp:include page="menu.jsp" />
+<jsp:include page="_header.jsp" />
+<jsp:include page="_menu.jsp" />
 
 <fmt:setLocale value="en_US" scope="session"/>
 
@@ -62,7 +62,7 @@
     </div>
 </c:if>
 
-<jsp:include page="footer.jsp" />
+<jsp:include page="_footer.jsp" />
 
 </body>
 </html>

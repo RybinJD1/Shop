@@ -12,7 +12,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class OrderDetail implements Serializable {
 
-//    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private String id;
     private Order order;

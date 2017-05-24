@@ -4,6 +4,7 @@ import com.dao.ProductDao;
 import com.entity.Product;
 import com.model.PaginationResult;
 import com.model.ProductInfo;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -17,11 +18,14 @@ import java.util.Date;
 @Repository
 public class ProductDaoImpl implements ProductDao{
 
+    private static final Logger log = Logger.getLogger(ProductDaoImpl.class);
+
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
     public Product findProduct(String code) {
+        log.info("findProduct :" + code);
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Product.class);
         crit.add(Restrictions.eq("code", code));
@@ -30,6 +34,7 @@ public class ProductDaoImpl implements ProductDao{
 
     @Override
     public ProductInfo findProductInfo(String code) {
+        log.info("findProductInfo :" + code);
         Product product = this.findProduct(code);
         if (product == null) {
             return null;
@@ -39,6 +44,7 @@ public class ProductDaoImpl implements ProductDao{
 
     @Override
     public void save(ProductInfo productInfo) {
+        log.info("save :");
         String code = productInfo.getCode();
         Product product = null;
         boolean isNew = false;
@@ -67,6 +73,7 @@ public class ProductDaoImpl implements ProductDao{
 
     @Override
     public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage, String likeName) {
+        log.info("queryProducts :");
         String sql = "Select new " + ProductInfo.class.getName()
                 + "(p.code, p.name, p.price) " + " from "
                 + Product.class.getName() + " p ";
@@ -84,6 +91,7 @@ public class ProductDaoImpl implements ProductDao{
 
     @Override
     public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage) {
+        log.info("queryProducts");
         return queryProducts(page, maxResult, maxNavigationPage, null);
     }
 }

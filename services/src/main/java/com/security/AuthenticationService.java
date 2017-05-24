@@ -24,7 +24,7 @@ public class AuthenticationService implements UserDetailsService {
     private static final Logger log = Logger.getLogger(AuthenticationService.class);
 
     @Autowired
-    @Qualifier("AccountDao")
+    @Qualifier("accountDaoImpl")
     private AccountDao accountDao;
 
     @Override

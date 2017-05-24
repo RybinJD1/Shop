@@ -11,8 +11,8 @@
 
 </head>
 <body>
-<jsp:include page="header.jsp" />
-<jsp:include page="menu.jsp" />
+<jsp:include page="_header.jsp" />
+<jsp:include page="_menu.jsp" />
 
 <div class="page-title">Finalize</div>
 
@@ -20,7 +20,7 @@
     <h3>Thank you for Order</h3>
     Your order number is: ${lastOrderedCart.orderNum}
 </div>
-<jsp:include page="footer.jsp" />
+<jsp:include page="_footer.jsp" />
 
 </body>
 </html>

@@ -13,7 +13,7 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class Account implements Serializable {
 
-//    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     public static final String ROLE_ADMIN = "ADMIN";
     public static final String ROLE_USER = "USER";

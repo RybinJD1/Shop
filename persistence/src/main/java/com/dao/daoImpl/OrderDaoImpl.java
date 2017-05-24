@@ -6,6 +6,7 @@ import com.entity.Order;
 import com.entity.OrderDetail;
 import com.entity.Product;
 import com.model.*;
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -24,6 +25,8 @@ import java.util.UUID;
 @Repository
 public class OrderDaoImpl implements OrderDao {
 
+    private static final Logger log = Logger.getLogger(OrderDaoImpl.class);
+
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -31,6 +34,7 @@ public class OrderDaoImpl implements OrderDao {
     private ProductDao productDAO;
 
     private int getMaxOrderNum() {
+        log.info("getMaxOrderNum :");
         String sql = "Select max(o.orderNum) from " + Order.class.getName() + " o ";
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery(sql);
@@ -43,6 +47,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void saveOrder(CartInfo cartInfo) {
+        log.info("saveOrder :");
         Session session = sessionFactory.getCurrentSession();
         int orderNum = this.getMaxOrderNum() + 1;
         Order order = new Order();
@@ -74,6 +79,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public PaginationResult<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage) {
+        log.info("listOrderInfo :");
         String sql = "Select new " + OrderInfo.class.getName()
                 + "(ord.id, ord.orderDate, ord.orderNum, ord.amount, "
                 + " ord.customerName, ord.customerAddress, ord.customerEmail, ord.customerPhone) " + " from "
@@ -85,6 +91,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     public Order findOrder(String orderId) {
+        log.info("findOrder :" + orderId);
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Order.class);
         crit.add(Restrictions.eq("id", orderId));
@@ -93,6 +100,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public OrderInfo getOrderInfo(String orderId) {
+        log.info("getOrderInfo :" + orderId);
         Order order = this.findOrder(orderId);
         if (order == null) {
             return null;
@@ -104,11 +112,11 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<OrderDetailInfo> listOrderDetailInfos(String orderId) {
+        log.info("listOrderDetailInfos :" + orderId);
         String sql = "Select new " + OrderDetailInfo.class.getName()
                 + "(d.id, d.product.code, d.product.name , d.quanity,d.price,d.amount) "
                 + " from " + OrderDetail.class.getName() + " d "
                 + " where d.order.id = :orderId ";
-
         Session session = this.sessionFactory.getCurrentSession();
         Query query = session.createQuery(sql);
         query.setParameter("orderId", orderId);

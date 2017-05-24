@@ -13,8 +13,8 @@
 
 </head>
 <body>
-<jsp:include page="header.jsp" />
-<jsp:include page="menu.jsp" />
+<jsp:include page="_header.jsp" />
+<jsp:include page="_menu.jsp" />
 
 <div class="page-title">Product</div>
 
@@ -73,7 +73,7 @@
     </table>
 </form:form>
 
-<jsp:include page="footer.jsp" />
+<jsp:include page="_footer.jsp" />
 
 </body>
 </html>
