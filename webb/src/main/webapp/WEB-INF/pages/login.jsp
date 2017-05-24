@@ -9,7 +9,7 @@
 
     <title>Login</title>
 
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
 
 </head>
 <body>
@@ -49,6 +49,8 @@
                 <td>&nbsp;</td>
                 <td><input type="submit" value="Login" /> <input type="reset" value="Reset" /></td>
             </tr>
+            admin/123<br/>
+            user/123
         </table>
     </form>
     <span class="error-message">${error }</span>

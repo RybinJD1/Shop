@@ -4,7 +4,7 @@
 
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 
-
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
 <div class="menu-container">
 
     <a href="${pageContext.request.contextPath}/"><spring:message code='menu.home'/></a>
@@ -17,7 +17,7 @@
         <spring:message code='page.mycart'/>
     </a>
     |
-    <security:authorize  access="hasAnyRole('ROLE_ADMIN,'ROLE_USER')">
+    <security:authorize  access="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
         <a href="${pageContext.request.contextPath}/orderList">
             <spring:message code='page.allorders'/>
         </a>

@@ -6,12 +6,12 @@
 
     <title>Shop Online</title>
 
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
 </head>
 
 <body>
-<%--<jsp:include page="_header.jsp" />--%>
-<%--<jsp:include page="_menu.jsp" />--%>
+<jsp:include page="/WEB-INF/pages/_header.jsp" />
+<jsp:include page="/WEB-INF/pages/_menu.jsp" />
 
 <div class="page-title"><spring:message code="page.home"/></div>
 

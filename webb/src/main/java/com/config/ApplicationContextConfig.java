@@ -49,7 +49,7 @@ public class ApplicationContextConfig {
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource rb = new ResourceBundleMessageSource();
-        rb.setBasenames(new String[]{"messages/validator"});
+        rb.setBasenames(new String[]{"messages/validator", "i18n/messages"});
         return rb;
     }
 

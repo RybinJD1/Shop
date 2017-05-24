@@ -10,7 +10,7 @@
 
     <title>Enter Customer Information</title>
 
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
 
 </head>
 <body>

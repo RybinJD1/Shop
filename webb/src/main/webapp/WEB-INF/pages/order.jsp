@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <title>Product List</title>
 
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/styles.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
 
 </head>
 <body>
