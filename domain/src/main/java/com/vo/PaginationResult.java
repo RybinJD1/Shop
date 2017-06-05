@@ -1,4 +1,4 @@
-package com.model;
+package com.vo;
 
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;

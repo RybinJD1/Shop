@@ -1,8 +1,8 @@
 package com.services;
 
 import com.entity.Product;
-import com.model.PaginationResult;
-import com.model.ProductInfo;
+import com.vo.PaginationResult;
+import com.vo.ProductInfo;
 import com.services.exceptions.ServiceException;
 
 /**

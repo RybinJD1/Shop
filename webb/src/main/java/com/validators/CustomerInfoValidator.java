@@ -1,6 +1,6 @@
 package com.validators;
 
-import com.model.CustomerInfo;
+import com.vo.CustomerInfo;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

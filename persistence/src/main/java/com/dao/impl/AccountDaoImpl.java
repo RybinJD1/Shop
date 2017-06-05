@@ -1,4 +1,4 @@
-package com.dao.daoImpl;
+package com.dao.impl;
 
 import com.dao.AccountDao;
 import com.entity.Account;

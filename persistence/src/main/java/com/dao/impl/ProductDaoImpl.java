@@ -1,17 +1,14 @@
-package com.dao.daoImpl;
+package com.dao.impl;
 
 import com.dao.ProductDao;
-import com.dao.exceptions.DaoException;
 import com.entity.Product;
-import com.model.PaginationResult;
-import com.model.ProductInfo;
+import com.vo.PaginationResult;
+import com.vo.ProductInfo;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import java.util.Date;
 
 
 /**
@@ -40,7 +37,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public ProductInfo findProductInfo(String code) throws DaoException {
+    public ProductInfo findProductInfo(String code) {
         log.info("findProductInfo :" + code);
         Product product = this.findProduct(code);
         if (product == null) {
@@ -50,36 +47,13 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void save(ProductInfo productInfo) throws DaoException {
+    public void save(Product product) {
         log.info("save :");
-        String code = productInfo.getCode();
-        Product product = null;
-        boolean isNew = false;
-        if (code != null) {
-            product = this.findProduct(code);
-        }
-        if (product == null) {
-            isNew = true;
-            product = new Product();
-            product.setCreateDate(new Date());
-        }
-        product.setCode(code);
-        product.setName(productInfo.getName());
-        product.setPrice(productInfo.getPrice());
-        if (productInfo.getFileData() != null) {
-            byte[] image = productInfo.getFileData().getBytes();
-            if (image != null && image.length > 0) {
-                product.setImage(image);
-            }
-        }
-        if (isNew) {
-            this.sessionFactory.getCurrentSession().persist(product);
-        }
-        this.sessionFactory.getCurrentSession().flush();
+        sessionFactory.getCurrentSession().saveOrUpdate(product);
     }
 
     @Override
-    public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage, String likeName) throws DaoException {
+    public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage, String likeName) {
         log.info("queryProducts :");
         String sql = "Select new " + ProductInfo.class.getName()
                 + "(p.code, p.name, p.price) " + " from "
@@ -97,7 +71,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage) throws DaoException {
+    public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage) {
         log.info("queryProducts");
         return queryProducts(page, maxResult, maxNavigationPage, null);
     }

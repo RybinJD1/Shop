@@ -1,12 +1,11 @@
-package com.dao.daoImpl;
+package com.dao.impl;
 
 import com.dao.OrderDao;
-import com.dao.ProductDao;
-import com.dao.exceptions.DaoException;
 import com.entity.Order;
 import com.entity.OrderDetail;
-import com.entity.Product;
-import com.model.*;
+import com.vo.OrderDetailInfo;
+import com.vo.OrderInfo;
+import com.vo.PaginationResult;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -16,9 +15,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Class DAO for orders.
@@ -31,10 +28,8 @@ public class OrderDaoImpl implements OrderDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    @Autowired
-    private ProductDao productDAO;
-
-    private int getMaxOrderNum() {
+    @Override
+    public int getMaxOrderNum() {
         log.info("getMaxOrderNum :");
         String sql = "Select max(o.orderNum) from " + Order.class.getName() + " o ";
         Session session = sessionFactory.getCurrentSession();
@@ -47,39 +42,21 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void saveOrder(CartInfo cartInfo) throws DaoException {
+    public void saveOrder(Order order) {
         log.info("saveOrder :");
         Session session = sessionFactory.getCurrentSession();
-        int orderNum = this.getMaxOrderNum() + 1;
-        Order order = new Order();
-        order.setId(UUID.randomUUID().toString());
-        order.setOrderNum(orderNum);
-        order.setOrderDate(new Date());
-        order.setAmount(cartInfo.getAmountTotal());
-        CustomerInfo customerInfo = cartInfo.getCustomerInfo();
-        order.setCustomerName(customerInfo.getName());
-        order.setCustomerEmail(customerInfo.getEmail());
-        order.setCustomerPhone(customerInfo.getPhone());
-        order.setCustomerAddress(customerInfo.getAddress());
         session.persist(order);
-        List<CartLineInfo> lines = cartInfo.getCartLines();
-        for (CartLineInfo line : lines) {
-            OrderDetail detail = new OrderDetail();
-            detail.setId(UUID.randomUUID().toString());
-            detail.setOrder(order);
-            detail.setAmount(line.getAmount());
-            detail.setPrice(line.getProductInfo().getPrice());
-            detail.setQuanity(line.getQuantity());
-            String code = line.getProductInfo().getCode();
-            Product product = this.productDAO.findProduct(code);
-            detail.setProduct(product);
-            session.persist(detail);
-        }
-        cartInfo.setOrderNum(orderNum);
     }
 
     @Override
-    public PaginationResult<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage) throws DaoException {
+    public void saveOrderDetail(OrderDetail detail) {
+        log.info("saveOrderDetail :");
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(detail);
+    }
+
+    @Override
+    public PaginationResult<OrderInfo> listOrderInfo(int page, int maxResult, int maxNavigationPage) {
         log.info("listOrderInfo :");
         String sql = "Select new " + OrderInfo.class.getName()
                 + "(ord.id, ord.orderDate, ord.orderNum, ord.amount, "
@@ -91,7 +68,7 @@ public class OrderDaoImpl implements OrderDao {
         return new PaginationResult<OrderInfo>(query, page, maxResult, maxNavigationPage);
     }
 
-    public Order findOrder(String orderId) throws DaoException {
+    public Order findOrder(String orderId) {
         log.info("findOrder :" + orderId);
         Session session = sessionFactory.getCurrentSession();
         Criteria crit = session.createCriteria(Order.class);
@@ -100,7 +77,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public OrderInfo getOrderInfo(String orderId) throws DaoException {
+    public OrderInfo getOrderInfo(String orderId) {
         log.info("getOrderInfo :" + orderId);
         Order order = this.findOrder(orderId);
         if (order == null) {
@@ -112,7 +89,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public List<OrderDetailInfo> listOrderDetailInfos(String orderId) throws DaoException {
+    public List<OrderDetailInfo> listOrderDetailInfos(String orderId) {
         log.info("listOrderDetailInfos :" + orderId);
         String sql = "Select new " + OrderDetailInfo.class.getName()
                 + "(d.id, d.product.code, d.product.name , d.quanity,d.price,d.amount) "

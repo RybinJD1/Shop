@@ -1,9 +1,9 @@
 package com.controller;
 
-import com.model.OrderDetailInfo;
-import com.model.OrderInfo;
-import com.model.PaginationResult;
-import com.model.ProductInfo;
+import com.vo.OrderDetailInfo;
+import com.vo.OrderInfo;
+import com.vo.PaginationResult;
+import com.vo.ProductInfo;
 import com.services.OrderService;
 import com.services.ProductService;
 import com.services.exceptions.ServiceException;
@@ -34,7 +34,6 @@ import java.util.List;
 public class AdminController {
 
     private static final Logger log = Logger.getLogger(AdminController.class);
-
 
     @Autowired
     private OrderService orderService;

@@ -1,6 +1,6 @@
 package com.util;
 
-import com.model.CartInfo;
+import com.vo.CartInfo;
 
 import javax.servlet.http.HttpServletRequest;
 

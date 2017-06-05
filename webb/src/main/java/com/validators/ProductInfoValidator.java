@@ -2,7 +2,7 @@ package com.validators;
 
 import com.dao.ProductDao;
 import com.entity.Product;
-import com.model.ProductInfo;
+import com.vo.ProductInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

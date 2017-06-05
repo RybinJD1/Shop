@@ -1,4 +1,4 @@
-package com.model;
+package com.vo;
 
 import java.util.Date;
 import java.util.List;

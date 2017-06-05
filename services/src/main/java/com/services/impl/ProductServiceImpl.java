@@ -1,17 +1,18 @@
-package com.services.servicesImpl;
+package com.services.impl;
 
 import com.dao.ProductDao;
-import com.dao.exceptions.DaoException;
 import com.entity.Product;
-import com.model.PaginationResult;
-import com.model.ProductInfo;
 import com.services.ProductService;
 import com.services.exceptions.ServiceException;
+import com.vo.PaginationResult;
+import com.vo.ProductInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Service
 @Transactional
@@ -31,41 +32,40 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductInfo findProductInfo(String code) throws ServiceException {
-        try {
-            return productDao.findProductInfo(code);
-        } catch (DaoException e) {
-            log.info("findProductInfo" + e);
-            throw new ServiceException(e.getKey(), e);
-        }
+        return productDao.findProductInfo(code);
     }
 
     @Override
     public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage) throws ServiceException {
-        try {
-            return productDao.queryProducts(page, maxResult, maxNavigationPage);
-        } catch (DaoException e) {
-            log.info("queryProducts" + e);
-            throw new ServiceException(e.getKey(), e);
-        }
+        return productDao.queryProducts(page, maxResult, maxNavigationPage);
     }
 
     @Override
     public PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage, String likeName) throws ServiceException {
-        try {
-            return productDao.queryProducts(page, maxResult, maxNavigationPage, likeName);
-        } catch (DaoException e) {
-            log.info("queryProducts" + e);
-            throw new ServiceException(e.getKey(), e);
-        }
+        return productDao.queryProducts(page, maxResult, maxNavigationPage, likeName);
     }
 
     @Override
     public void save(ProductInfo productInfo) throws ServiceException {
-        try {
-            productDao.save(productInfo);
-        } catch (DaoException e) {
-            log.info("save" + e);
-            throw new ServiceException(e.getKey(), e);
+        String code = productInfo.getCode();
+        Product product = null;
+        if (code != null) {
+            product = this.findProduct(code);
         }
+        if (product == null) {
+            product = new Product();
+            product.setCreateDate(new Date());
+        }
+        product.setCode(code);
+        product.setName(productInfo.getName());
+        product.setPrice(productInfo.getPrice());
+        if (productInfo.getFileData() != null) {
+            byte[] image = productInfo.getFileData().getBytes();
+            if (image != null && image.length > 0) {
+                product.setImage(image);
+            }
+        }
+        productDao.save(product);
     }
+
 }

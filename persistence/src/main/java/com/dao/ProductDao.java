@@ -1,9 +1,8 @@
 package com.dao;
 
-import com.dao.exceptions.DaoException;
 import com.entity.Product;
-import com.model.PaginationResult;
-import com.model.ProductInfo;
+import com.vo.PaginationResult;
+import com.vo.ProductInfo;
 
 /**
  * Interface methods Products
@@ -24,7 +23,7 @@ public interface ProductDao {
      * @param code
      * @return ProductInfo
      */
-    ProductInfo findProductInfo(String code) throws DaoException;
+    ProductInfo findProductInfo(String code);
 
     /**
      * @param page
@@ -32,7 +31,7 @@ public interface ProductDao {
      * @param maxNavigationPage
      * @return Pagination result
      */
-    PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage) throws DaoException;
+    PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage);
 
     /**
      * @param page
@@ -41,12 +40,12 @@ public interface ProductDao {
      * @param likeName
      * @return Pagination result
      */
-    PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage, String likeName) throws DaoException;
+    PaginationResult<ProductInfo> queryProducts(int page, int maxResult, int maxNavigationPage, String likeName);
 
     /**
      * This method save product info
      *
-     * @param productInfo
+     * @param product
      */
-    void save(ProductInfo productInfo) throws DaoException;
+    void save(Product product);
 }

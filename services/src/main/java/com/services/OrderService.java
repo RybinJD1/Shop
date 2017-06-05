@@ -1,9 +1,9 @@
 package com.services;
 
-import com.model.CartInfo;
-import com.model.OrderDetailInfo;
-import com.model.OrderInfo;
-import com.model.PaginationResult;
+import com.vo.CartInfo;
+import com.vo.OrderDetailInfo;
+import com.vo.OrderInfo;
+import com.vo.PaginationResult;
 import com.services.exceptions.ServiceException;
 
 import java.util.List;

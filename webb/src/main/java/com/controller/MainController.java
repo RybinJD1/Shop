@@ -1,10 +1,10 @@
 package com.controller;
 
 import com.entity.Product;
-import com.model.CartInfo;
-import com.model.CustomerInfo;
-import com.model.PaginationResult;
-import com.model.ProductInfo;
+import com.vo.CartInfo;
+import com.vo.CustomerInfo;
+import com.vo.PaginationResult;
+import com.vo.ProductInfo;
 import com.services.OrderService;
 import com.services.ProductService;
 import com.services.exceptions.ServiceException;

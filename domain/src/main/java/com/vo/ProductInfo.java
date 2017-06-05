@@ -1,4 +1,4 @@
-package com.model;
+package com.vo;
 
 import com.entity.Product;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
